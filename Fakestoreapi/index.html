@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f9f9f9;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+        }
+      
+        #container {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 20px;
+          padding: 20px;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+      
+        #container div {
+          background-color: #ffffff;
+          border-radius: 15px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+      
+        #container div:hover {
+          transform: translateY(-10px);
+          box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+      
+        #container img {
+          width: 100%;
+          height: 200px;
+          object-fit: cover;
+          transition: transform 0.3s ease-in-out;
+        }
+      
+        #container img:hover {
+          transform: scale(1.05);
+        }
+      
+        #container h3 {
+          font-size: 18px;
+          margin: 10px;
+          color: #333333;
+          transition: color 0.3s ease-in-out;
+        }
+      
+        #container h3:hover {
+          color: #007bff;
+        }
+      
+        #container p {
+          margin: 5px 10px;
+          font-size: 14px;
+          color: #555555;
+          transition: color 0.3s ease-in-out;
+        }
+      
+        #container p:hover {
+          color: #007bff;
+        }
+      
+        #container .price {
+          font-weight: bold;
+          color: #28a745;
+        }
+      </style>
+      
+      
+  </head>
+
+  <body>
+    <div id="container"></div>
+    <script>
+      let Category = ["men's clothing", "jewelery"];
+      let NewCategory = [];
+      let container=document.getElementById("container")
+      async function Products() {
+        try {
+          const api = await fetch("https://fakestoreapi.com/products");
+          const newapi = await api.json();
+          newapi.forEach((ele) => {
+            for (i of Category) {
+              // console.log(i);
+              if (ele.category === i) {
+                // console.log('yes');
+                NewCategory.push(ele);
+                // console.log(NewCategory);
+                let div=document.createElement('div')
+                let img=document.createElement('img')
+                let title=document.createElement('h3')
+                let rating=document.createElement('p')
+                let category=document.createElement('p')
+                let price=document.createElement('p')
+                container.append(div)
+                div.append(img,title,rating,category,price)
+                img.src=ele.image;
+                title.textContent="title"+ele.title;
+                category.textContent="category"+ele.category;
+                rating.textContent="rating"+ele.rating.rate;
+                price.textContent="price"+ele.price
+
+                // console.log(container);
+                
+              }
+            }
+          });
+        } catch (error) {
+          console.log("Not able to fetch"), error;
+        }
+      }
+      Products();
+    </script>
+  </body>
+</html>
